@@ -1,23 +1,20 @@
 #include <stdio.h>
 
-void ordem(int a, int b)
-{
-  if (a > b) {
-    printf( "\n%d, %d\n", b, a);
-  }
-  else {
-    printf( "\n%d, %d\n", a, b);
-  }
-}
+void calcularA(int *base, int altura){
+  int area;
+  area = *base*altura;
+  printf("\nO valor da area é %d\n", area);
+} 
 
 int main() {
-    int valor1, valor2;
-    printf ("Insira o primeiro numero ");
-    scanf("%d", &valor1);
-    printf("Insira o segundo numero ");
-    scanf("%d", &valor2);
-    printf("A ordem crescente eh:");
     
-    ordem(valor1, valor2);
+    int base, valor2;
+    printf ("Insira o valor da base ");
+    scanf("%d", &base);
+    printf("Insira o valor da altura ");
+    scanf("%d", &valor2);
+
+    calcularA(&base, valor2);
+
     return 0;
 }
