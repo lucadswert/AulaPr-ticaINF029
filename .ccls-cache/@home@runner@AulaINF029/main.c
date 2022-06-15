@@ -5,11 +5,13 @@
 #include "funcoes.h"
 
 int main() {
+    arquivoCompras();
+    arquivoVendas();
     char menuPrincipal(  );
     void inserir( );
     void listarOfertas( );
-    arquivoCompras();
-    arquivoVendas();
+    void negociarOfertas();
+    void apagarOfertas();
     int resposta;
     do{
       printf( "\n=====================================\n"
@@ -34,9 +36,9 @@ int main() {
 void inserir( ){
   Compra compra;
   Venda venda;
-  int qtd, opAcao;
-  float valor;
-  int resposta;
+  int qtd = 0, opAcao = 0;
+  float valor = 0;
+  int resposta = 0;
   do{
     printf( "\n=====================================\n"
             "||          MENU - INSERIR         || \n"
@@ -80,6 +82,7 @@ void inserir( ){
                   }
                   }while (valor < 0);
                   listaCompra = inserir_lista_compra(listaCompra, qtd, valor, opAcao);
+                  break;
           case 2:
            printf("=====================================\n"
                   "||        OFERTA DE VENDA          ||\n"
@@ -113,7 +116,7 @@ void inserir( ){
                   }
                   }while (valor < 0);
                   listaVenda = inserir_lista_venda(listaVenda, qtd, valor, opAcao);
-          break;
+                  break;
           default:
           break;
           }
@@ -154,6 +157,7 @@ void listarOfertas(){
               break;}
             if(opAcao == 1){
             consultar_lista_compra(listaCompra);
+            break;
             }else{
             consultar_lista_individual(listaCompra, opAcao);}
               }while(opAcao < 1 || opAcao > 4);
@@ -174,10 +178,11 @@ void listarOfertas(){
               break;}
             if(opAcao == 1){
               consultar_lista_venda(listaVenda);
+              break;
             }else{
             consultar_lista_venda_individual(listaVenda, opAcao);}
               }while(opAcao < 1 || opAcao > 4);
-          break;
+              break;
           default:
           break;
           }
@@ -279,13 +284,13 @@ void apagarOfertas(){
                           apagaVendas(listaVenda);
                     }if(opAcao == 2){    
                           printf("Todas ofertas de PETR4 foram apagadas!\n");
-                          RemoveDado(1,listaVenda);
+                          RemoveDadoVenda(1,listaVenda);
                     }if(opAcao == 3){
                           printf("Todas ofertas de VALE5 foram apagadas!\n");
-                          RemoveDado(2,listaVenda);
+                          RemoveDadoVenda(2,listaVenda);
                     }if(opAcao == 4){
                           printf("Todas ofertas de ITSA4 foram apagadas!\n");
-                          RemoveDado(3,listaVenda);
+                          RemoveDadoVenda(3,listaVenda);
                       }
                     if(opAcao == 0){
                           break;}
@@ -328,53 +333,45 @@ void arquivoVendas(){
 Registro* realizarOperacoes(Registro* l, Compra* listaCompra, Venda* listaVenda){
   Compra *referenciaCompra = listaCompra;
   Venda *referenciaVenda = listaVenda;
-  
-
 
   for(referenciaCompra = listaCompra; referenciaCompra!= NULL; referenciaCompra = referenciaCompra->prox){
     for(referenciaVenda = listaVenda; referenciaVenda!= NULL; referenciaVenda =   referenciaVenda->prox){
-        int siglaCompra = referenciaCompra->sigla, siglaVenda = referenciaVenda->sigla;
-        int qtdCompra = referenciaCompra->qtd, qtdVenda = referenciaVenda->qtd;
-        float valorCompra = referenciaCompra->valor, valorVenda = referenciaVenda->valor;
+      
+        int siglaCompra = referenciaCompra->sigla;
+        int siglaVenda = referenciaVenda->sigla;
+        int qtdCompra = referenciaCompra->qtd;
+        int qtdVenda = referenciaVenda->qtd;
+        float valorCompra = referenciaCompra->valor;
+        float valorVenda = referenciaVenda->valor;
+      
         if(siglaCompra == siglaVenda){
+        printf("Sigla C: %d | Qtd C: %d | Valor C %.2f\n", siglaCompra, qtdCompra, valorCompra);
+        printf("Sigla V: %d | Qtd V: %d | Valor V %.2f\n\n", siglaVenda, qtdVenda, valorVenda);
           if(valorCompra > valorVenda || valorCompra == valorVenda ){
             if(qtdCompra > qtdVenda){
-              Registro* acoesRegistro= (Registro*) malloc(sizeof(Registro));
-              acoesRegistro->sigla = siglaCompra;
-              acoesRegistro->valor = valorCompra;
-              acoesRegistro->qtd = referenciaVenda->qtd;
-      	      acoesRegistro->prox = l;
+              listaRegistro = inserir_lista_registro(listaRegistro, qtdVenda, valorCompra, siglaCompra);
               referenciaCompra->qtd = qtdCompra  - qtdVenda;
-              RemoveDadoEspecificoVenda(qtdVenda, siglaCompra, valorVenda, listaVenda);
-              printf("Operações Realizadas\n");
-              return acoesRegistro;
+              RemoveDadoEspecificoVenda(qtdVenda, siglaVenda, valorVenda, listaVenda);
+              printf("\t\tOperações Realizadas\n\n");
+              return realizarOperacoes(listaRegistro, listaCompra, listaVenda);
             }else if(qtdCompra < qtdVenda){
-              Registro* acoesRegistro= (Registro*) malloc(sizeof(Registro));
-              acoesRegistro->sigla = siglaCompra;
-              acoesRegistro->valor = valorVenda;
-              acoesRegistro->qtd = referenciaCompra->qtd;
-              acoesRegistro->prox = l;
+              listaRegistro = inserir_lista_registro(listaRegistro, qtdCompra, valorVenda, siglaCompra);
               referenciaVenda->qtd = qtdVenda - qtdCompra;
               RemoveDadoEspecifico(qtdCompra, siglaCompra, valorCompra, listaCompra);
-              printf("Operações Realizadas\n");
-              return acoesRegistro;
+              printf("\t\tOperações Realizadas\n\n");
+              return realizarOperacoes(listaRegistro, listaCompra, listaVenda);
             }
             else if (qtdCompra == qtdVenda){
-              Registro* acoesRegistro= (Registro*) malloc(sizeof(Registro));
-              acoesRegistro->qtd = qtdCompra;
-              acoesRegistro->sigla = siglaCompra;
-              acoesRegistro->valor = valorCompra;
-              acoesRegistro->prox = l;
+              listaRegistro = inserir_lista_registro(listaRegistro, qtdCompra, valorCompra, siglaCompra);
               RemoveDadoEspecificoVenda(qtdVenda, siglaVenda, valorVenda, listaVenda);
               RemoveDadoEspecifico(qtdCompra, siglaCompra, valorCompra, listaCompra);
-              printf("Operações Realizadas\n");
-              return acoesRegistro;
+              printf("\t\tOperações Realizadas\n\n");
+              return realizarOperacoes(listaRegistro, listaCompra, listaVenda);
             }
             }
     }}}
-  return NULL;
+  //return listaRegistro;
   } 
-
 
 Registro* inserir_lista_registro(Registro* l, int qtd, float valor, int sigla){
 	Registro* acoesRegistro= (Registro*) malloc(sizeof(Registro));
