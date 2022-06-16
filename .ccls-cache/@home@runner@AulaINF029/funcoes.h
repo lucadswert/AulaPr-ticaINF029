@@ -54,13 +54,15 @@ void apagarOfertas();
 void inserir( );
 void listarOfertas( );
 void consultar_registro(Registro* inicioRegistro);
-void realizarOperacoes(Registro* l, Compra* inicioCompra, Venda* inicioVenda);
+Registro* realizarOperacoes(Registro* l, Compra* inicioCompra, Venda* inicioVenda);
 Compra *RemoveDadoEspecifico(int qtd, int sigla, float valor, Compra *ptr);
 Venda *RemoveDadoEspecificoVenda(int qtd, int sigla, float valor, Venda *ptr);
-void inserir_lista_registro(Registro* l, int qtd, float valor, int sigla);
+Registro* inserir_lista_registro(Registro* l, int qtd, float valor, int sigla);
 void realizarOperacoesIndividuais(int sigla, Registro* l, Compra* listaCompra, Venda* listaVenda);
 
 void selectsortVenda(Venda *p);
 void selectsortCompra(Compra *p);
+
+Registro* operacaoRealizada(Registro* l, int qtdCompra, float valorOp, int siglaCompra);
 
 #endif  // FUNCOES_H
