@@ -38,7 +38,7 @@ Compra *RemoveDado(int dado, Compra *ptr);
 
 //Funcoes de Venda//
 Venda *listaVenda = NULL;
-Venda *inicioVenda=NULL;
+Venda *inicioVenda = NULL;
 Compra* apagaCompras(Compra* compra);
 void consultar_lista_venda(Venda* inicio);
 Venda* inserir_lista_venda(Venda* l, int qtd, float valor, int sigla);
@@ -48,13 +48,16 @@ void arquivoVendas();
 Venda *RemoveDadoVenda(int dado, Venda *ptr);
 
 //Menus//
+void menuPrincipal();
 void negociarOfertas();
 void apagarOfertas();
+void inserir( );
+void listarOfertas( );
 void consultar_registro(Registro* inicioRegistro);
-Registro* realizarOperacoes(Registro* l, Compra* inicioCompra, Venda* inicioVenda);
+void realizarOperacoes(Registro* l, Compra* inicioCompra, Venda* inicioVenda);
 Compra *RemoveDadoEspecifico(int qtd, int sigla, float valor, Compra *ptr);
 Venda *RemoveDadoEspecificoVenda(int qtd, int sigla, float valor, Venda *ptr);
-Registro* inserir_lista_registro(Registro* l, int qtd, float valor, int sigla);
+void inserir_lista_registro(Registro* l, int qtd, float valor, int sigla);
 //Registro* realizarOperacoesIndividuais(int sigla, Registro* l, Compra* listaCompra, Venda* listaVenda);
 
 void selectsortVenda(Venda *p);
