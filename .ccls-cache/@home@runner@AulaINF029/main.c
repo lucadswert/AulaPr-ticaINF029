@@ -7,6 +7,8 @@
 int main() {
     arquivoCompras();
     arquivoVendas();
+    //selectsortCompra(listaCompra);
+    //selectsortVenda(listaVenda);
     char menuPrincipal(  );
     void inserir( );
     void listarOfertas( );
@@ -370,7 +372,7 @@ Registro* realizarOperacoes(Registro* l, Compra* listaCompra, Venda* listaVenda)
             }
             }
     }}}
-  //return listaRegistro;
+  return listaRegistro;
   } 
 
 Registro* inserir_lista_registro(Registro* l, int qtd, float valor, int sigla){
@@ -621,4 +623,48 @@ Compra *RemoveDadoEspecifico(int qtd, int sigla, float valor, Compra *ptr){
 		anterior = busca;
 		busca = busca->prox;
   return NULL;
+}
+
+void selectsortCompra(Compra *p) {
+     Compra *i, *j, *aux;
+     aux = (Compra *)malloc (sizeof (Compra));
+     i = p;
+     while( i != NULL) {
+            j = i->prox;
+            while (j != NULL) {
+                   if (i->valor < j->valor){
+                         //  swap dos ponteiros
+                         *aux = *i ; // copia valor de i em aux.
+                         *i =  *j; // copia valor de j em i.
+                         i->prox = aux->prox; // altera ponterio do próximo de i para que ele continue sendo o mesmo que era antes da copia
+                         aux->prox = j->prox; // copia o valor do ponteiro do proximo j
+                         *j = *aux; // copia valor de aux em j.
+                          j->prox = aux->prox; // altera ponterio do próximo de i para que ele continue sendo o mesmo que era antes da copia
+                   }
+                   j = j->prox;
+            }
+      i = i->prox;
+    }
+}
+
+void selectsortVenda(Venda *p) {
+     Venda *i, *j, *aux;
+     aux = (Venda *)malloc (sizeof (Venda));
+     i = p;
+     while( i != NULL) {
+            j = i->prox;
+            while (j != NULL) {
+                   if (i->valor < j->valor){
+                         //  swap dos ponteiros
+                         *aux = *i ; // copia valor de i em aux.
+                         *i =  *j; // copia valor de j em i.
+                         i->prox = aux->prox; // altera ponterio do próximo de i para que ele continue sendo o mesmo que era antes da copia
+                         aux->prox = j->prox; // copia o valor do ponteiro do proximo j
+                         *j = *aux; // copia valor de aux em j.
+                          j->prox = aux->prox; // altera ponterio do próximo de i para que ele continue sendo o mesmo que era antes da copia
+                   }
+                   j = j->prox;
+            }
+      i = i->prox;
+    }
 }

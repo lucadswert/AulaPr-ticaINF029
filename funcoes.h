@@ -57,4 +57,7 @@ Venda *RemoveDadoEspecificoVenda(int qtd, int sigla, float valor, Venda *ptr);
 Registro* inserir_lista_registro(Registro* l, int qtd, float valor, int sigla);
 //Registro* realizarOperacoesIndividuais(int sigla, Registro* l, Compra* listaCompra, Venda* listaVenda);
 
+void selectsortCompra(Compra *p);
+void selectsortVenda(Venda *p); 
+
 #endif  // FUNCOES_H
