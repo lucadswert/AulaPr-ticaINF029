@@ -203,7 +203,7 @@ void negociarOfertas(){
         if(resposta == 0){
               break;}
         if(resposta == 1){
-            realizarOperacoes(listaRegistro, listaCompra, listaVenda);
+            listaRegistro = realizarOperacoes(listaRegistro, listaCompra, listaVenda);
             consultar_lista_compra(listaCompra);
             consultar_lista_venda(listaVenda);
         }if(resposta == 2){
@@ -217,6 +217,8 @@ void negociarOfertas(){
 }
 
 void realizarOperacoesIndividuais(int sigla, Registro* l, Compra* listaCompra, Venda* listaVenda){
+  int siglaTemp, qtdTemp;
+  float valorTemp;
   Compra *referenciaCompra = listaCompra;
   for(referenciaCompra = listaCompra; referenciaCompra!= NULL; referenciaCompra = referenciaCompra->prox){
   Venda *referenciaVenda = listaVenda;
@@ -230,7 +232,9 @@ void realizarOperacoesIndividuais(int sigla, Registro* l, Compra* listaCompra, V
         if(siglaCompra == sigla && siglaVenda == sigla){
           if(valorCompra >= valorVenda){
             if(qtdCompra > qtdVenda){
-              inserir_lista_registro(listaRegistro, qtdVenda, valorCompra, siglaCompra);
+              siglaTemp = siglaCompra;
+              qtdTemp = qtdVenda;
+              valorTemp = valorCompra;
               referenciaCompra->qtd = qtdCompra  - qtdVenda;
               RemoveDadoEspecificoVenda(qtdVenda, siglaVenda, valorVenda, listaVenda);
               printf("\t\t||Operação Realizadas||\n");
@@ -253,7 +257,9 @@ void realizarOperacoesIndividuais(int sigla, Registro* l, Compra* listaCompra, V
           		printf("\t\t||ITSA4 V %3d R$%5.2f||\n\n", qtdVenda, valorVenda);
               }
             }else if(qtdCompra < qtdVenda){
-              inserir_lista_registro(listaRegistro, qtdCompra, valorVenda, siglaCompra);
+              siglaTemp = siglaCompra;
+              qtdTemp = qtdVenda;
+              valorTemp = valorCompra; 
               referenciaVenda->qtd = qtdVenda - qtdCompra;
               RemoveDadoEspecifico(qtdCompra, siglaCompra, valorCompra, listaCompra);
               printf("\t\t||Operação Realizadas||\n");
@@ -277,7 +283,9 @@ void realizarOperacoesIndividuais(int sigla, Registro* l, Compra* listaCompra, V
               }
             }
             else if (qtdCompra == qtdVenda){
-              inserir_lista_registro(listaRegistro, qtdCompra, valorCompra, siglaCompra);
+              siglaTemp = siglaCompra;
+              qtdTemp = qtdCompra;
+              valorTemp = valorVenda;
               RemoveDadoEspecificoVenda(qtdVenda, siglaVenda, valorVenda, listaVenda);
               RemoveDadoEspecifico(qtdCompra, siglaCompra, valorCompra, listaCompra);
               printf("\t\t||Operação Realizada||\n");
@@ -302,14 +310,15 @@ void realizarOperacoesIndividuais(int sigla, Registro* l, Compra* listaCompra, V
             }
             }
     }}}
-    
+    listaRegistro = inserir_lista_registro(listaRegistro, qtdTemp, valorTemp, siglaTemp);
   } 
 Registro* realizarOperacoes(Registro* l, Compra* listaCompra, Venda* listaVenda){
-  Compra *referenciaCompra = listaCompra;
-  Registro* referenciaRegistro = NULL;
-  for(referenciaCompra = listaCompra; referenciaCompra!= NULL; referenciaCompra = referenciaCompra->prox){
-  Venda *referenciaVenda = listaVenda;
-    for(referenciaVenda = listaVenda; referenciaVenda!= NULL; referenciaVenda =   referenciaVenda->prox){
+  Registro* referenciaRegistro = l;
+  int siglaTemp = 0, qtdTemp = 0;
+  float valorTemp = 0;
+  
+  for(Compra *referenciaCompra = listaCompra; referenciaCompra!= NULL; referenciaCompra = referenciaCompra->prox){
+    for(Venda *referenciaVenda = listaVenda; referenciaVenda!= NULL; referenciaVenda =   referenciaVenda->prox){
         int siglaCompra = referenciaCompra->sigla;
         int siglaVenda = referenciaVenda->sigla;
         int qtdCompra = referenciaCompra->qtd;
@@ -319,7 +328,9 @@ Registro* realizarOperacoes(Registro* l, Compra* listaCompra, Venda* listaVenda)
         if(siglaCompra == siglaVenda){
           if(valorCompra >= valorVenda){
             if(qtdCompra > qtdVenda){
-              inserir_lista_registro(listaRegistro, qtdVenda, valorCompra, siglaCompra);
+              siglaTemp = siglaCompra;
+              qtdTemp = qtdVenda;
+              valorTemp = valorCompra;
               referenciaCompra->qtd -= qtdVenda;
               RemoveDadoEspecificoVenda(qtdVenda, siglaVenda, valorVenda, listaVenda);
               printf("\t\t||Operação Realizadas||\n");
@@ -342,9 +353,11 @@ Registro* realizarOperacoes(Registro* l, Compra* listaCompra, Venda* listaVenda)
           		printf("\t\t||ITSA4 V %3d R$%5.2f||\n\n", qtdVenda, valorVenda);
             }
             }else if(qtdCompra < qtdVenda){
-              inserir_lista_registro(listaRegistro, qtdVenda, valorCompra, siglaCompra);              
-              referenciaVenda->qtd -= qtdCompra;            
-              RemoveDadoEspecifico(qtdCompra, siglaCompra, valorCompra, listaCompra);
+              siglaTemp = siglaCompra;
+              qtdTemp = qtdVenda;
+              valorTemp = valorCompra; 
+              referenciaVenda->qtd -= qtdCompra;  
+              RemoveDadoEspecifico(qtdCompra, siglaCompra, valorCompra, listaCompra); 
               printf("\t\t||Operação Realizadas||\n");
               if(siglaCompra == 1){
           		printf("\t\t||PETR4 C %3d R$%5.2f||\n", qtdCompra, valorCompra);
@@ -366,7 +379,9 @@ Registro* realizarOperacoes(Registro* l, Compra* listaCompra, Venda* listaVenda)
               }
             }
             else if (qtdCompra == qtdVenda){
-              inserir_lista_registro(listaRegistro, qtdCompra, valorVenda, siglaCompra);
+              siglaTemp = siglaCompra;
+              qtdTemp = qtdCompra;
+              valorTemp = valorVenda;
               RemoveDadoEspecificoVenda(qtdVenda, siglaVenda, valorVenda, listaVenda);
               RemoveDadoEspecifico(qtdCompra, siglaCompra, valorCompra, listaCompra);
               printf("\t\t||Operação Realizada||\n");
@@ -393,6 +408,7 @@ Registro* realizarOperacoes(Registro* l, Compra* listaCompra, Venda* listaVenda)
         }
       }
   }
+  return inserir_lista_registro(listaRegistro, qtdTemp, valorTemp, siglaTemp);
 } 
 
 Registro* inserir_lista_registro(Registro* l, int qtd, float valor, int sigla){
@@ -403,23 +419,26 @@ Registro* inserir_lista_registro(Registro* l, int qtd, float valor, int sigla){
 	acoesRegistro->prox = l;
   return acoesRegistro;
 }
-void consultar_registro(Registro* p){
-	Registro *referencia = p;
+
+void consultar_registro(Registro* inicioRegistro){
+	Registro *referencia = inicioRegistro;
   if (referencia == NULL){
    printf("\nNENHUMA NEGOCIAÇÃO FOI REALIZADA ATÉ O MOMENTO!\n");
   }else{
     printf( "\n\t\tA útlima ação comprada foi:\n");
+    for(referencia = inicioRegistro; referencia!= NULL; referencia = referencia->prox){
     if(referencia->sigla == 1){
-		printf("\tPETR4 | %3d unidades | Pelo valor de: R$%5.2f\n", referencia->qtd, referencia->valor);
+		printf("PETR4 | %3d unidades | Pelo valor de: R$%5.2f\n", referencia->qtd, referencia->valor);
     }
     if(referencia->sigla == 2){
-		printf("\tVALE5 | %3d unidades | Pelo valor de: R$%5.2f\n", referencia->qtd, referencia->valor);
+		printf("VALE5 | %3d unidades | Pelo valor de: R$%5.2f\n", referencia->qtd, referencia->valor);
     }
     if(referencia->sigla == 3){
-		printf("\tITSA4 | %3d unidades | Pelo valor de: R$%5.2f\n", referencia->qtd, referencia->valor);
+		printf("ITSA4 | %3d unidades | Pelo valor de: R$%5.2f\n", referencia->qtd, referencia->valor);
     }
   }
 }
+  }
 
 Venda* inserir_lista_venda(Venda* l, int qtd, float valor, int sigla){
 	Venda* acoesVenda= (Venda*) malloc(sizeof(Venda));
@@ -429,6 +448,7 @@ Venda* inserir_lista_venda(Venda* l, int qtd, float valor, int sigla){
 	acoesVenda->prox = l;
 	return acoesVenda;
   }
+
 void consultar_lista_venda(Venda* inicioVenda){
 	Venda *referencia = inicioVenda;
   if (referencia == NULL){
