@@ -220,8 +220,8 @@ void realizarOperacoesIndividuais(int sigla, Registro* l, Compra* listaCompra, V
   int siglaTemp, qtdTemp;
   float valorTemp;
   Compra *referenciaCompra = listaCompra;
-  for(referenciaCompra = listaCompra; referenciaCompra!= NULL; referenciaCompra = referenciaCompra->prox){
   Venda *referenciaVenda = listaVenda;
+  for(referenciaCompra = listaCompra; referenciaCompra!= NULL; referenciaCompra = referenciaCompra->prox){
     for(referenciaVenda = listaVenda; referenciaVenda!= NULL; referenciaVenda =   referenciaVenda->prox){
         int siglaCompra = referenciaCompra->sigla;
         int siglaVenda = referenciaVenda->sigla;
@@ -332,8 +332,8 @@ Registro* realizarOperacoes(Registro* l, Compra* listaCompra, Venda* listaVenda)
               qtdTemp = qtdVenda;
               valorTemp = valorCompra;
               referenciaCompra->qtd -= qtdVenda;
-              RemoveDadoEspecificoVenda(qtdVenda, siglaVenda, valorVenda, listaVenda);
               printf("\t\t||Operação Realizadas||\n");
+              RemoveDadoEspecificoVenda(qtdVenda, siglaVenda, valorVenda, listaVenda);
               if(siglaCompra == 1){
           		printf("\t\t||PETR4 C %3d R$%5.2f||\n", qtdCompra, valorCompra);
               }
