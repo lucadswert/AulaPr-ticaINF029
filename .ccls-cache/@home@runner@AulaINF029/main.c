@@ -264,7 +264,7 @@ Registro* realizarOperacoesPETRA(Registro* l, int sigla, Compra* listaCompra, Ve
               if(qtdCompra == qtdVenda){
               siglaTemp = siglaCompra;
               qtdTemp = qtdCompra;
-              valorTemp = valorVenda;
+              valorTemp = valorCompra;
               printf("\t\t||Operação Realizada||\n");
               if(siglaCompra == sigla){
           		printf("\t\t||PETR4 C %3d R$%5.2f||\n", qtdCompra, valorCompra);
@@ -281,7 +281,6 @@ Registro* realizarOperacoesPETRA(Registro* l, int sigla, Compra* listaCompra, Ve
   }
   return inserir_lista_registro(listaRegistroPETRA, qtdTemp, valorTemp, siglaTemp);
 } 
-
 Registro* realizarOperacoesVALE(Registro* l, int sigla, Compra* listaCompra, Venda* listaVenda){
   Registro* referenciaRegistroVALE = l;
   int siglaTemp = 0, qtdTemp = 0;
@@ -327,7 +326,7 @@ Registro* realizarOperacoesVALE(Registro* l, int sigla, Compra* listaCompra, Ven
               if(qtdCompra == qtdVenda){
               siglaTemp = siglaCompra;
               qtdTemp = qtdCompra;
-              valorTemp = valorVenda;
+              valorTemp = valorCompra;
               printf("\t\t||Operação Realizada||\n");
               if(siglaCompra == sigla){
           		printf("\t\t||VALE5 C %3d R$%5.2f||\n", qtdCompra, valorCompra);
@@ -343,8 +342,7 @@ Registro* realizarOperacoesVALE(Registro* l, int sigla, Compra* listaCompra, Ven
       }
   }
   return inserir_lista_registro(listaRegistroVALE, qtdTemp, valorTemp, siglaTemp);
-} 
-
+}
 Registro* realizarOperacoesITSA(Registro* l, int sigla, Compra* listaCompra, Venda* listaVenda){
   Registro* referenciaRegistroITSA = l;
   int siglaTemp = 0, qtdTemp = 0;
@@ -390,7 +388,7 @@ Registro* realizarOperacoesITSA(Registro* l, int sigla, Compra* listaCompra, Ven
               if(qtdCompra == qtdVenda){
               siglaTemp = siglaCompra;
               qtdTemp = qtdCompra;
-              valorTemp = valorVenda;
+              valorTemp = valorCompra;
               RemoveDadoEspecificoVenda(qtdVenda, siglaVenda, valorVenda, listaVenda);
               RemoveDadoEspecifico(qtdCompra, siglaCompra, valorCompra, listaCompra);
               printf("\t\t||Operação Realizada||\n");
@@ -406,8 +404,7 @@ Registro* realizarOperacoesITSA(Registro* l, int sigla, Compra* listaCompra, Ven
       }
   }
   return inserir_lista_registro(listaRegistroITSA, qtdTemp, valorTemp, siglaTemp);
-} 
-
+}
 Registro* inserir_lista_registro(Registro* l, int qtd, float valor, int sigla){
 	Registro* acoesRegistro= (Registro*) malloc(sizeof(Registro));
   acoesRegistro->sigla = sigla;
@@ -415,8 +412,7 @@ Registro* inserir_lista_registro(Registro* l, int qtd, float valor, int sigla){
   acoesRegistro->valor = valor;
 	acoesRegistro->prox = l;
   return acoesRegistro;
-}
-
+} 
 void consultar_registro(Registro* inicioRegistroPETRA, Registro* inicioRegistroVALE, Registro* inicioRegistroITSA ){
 	Registro *referenciaPETRA = inicioRegistroPETRA;
   Registro *referenciaVALE = inicioRegistroVALE;
@@ -470,7 +466,6 @@ void inserir_ordenado(Compra **lista, int qtd, float valor, int sigla){
     else{
         printf("Erro ao alocar memoria!\n");}
 }
-
 void inserir_ordenado_venda(Venda **lista, int qtd, float valor, int sigla){
     Venda *aux, *novo = malloc(sizeof(Venda));
 
@@ -498,7 +493,6 @@ void inserir_ordenado_venda(Venda **lista, int qtd, float valor, int sigla){
     else
         printf("Erro ao alocar memoria!\n");
 }
-
 void consultar_lista_venda(Venda* inicioVenda){
 	Venda *referencia = inicioVenda;
   if (referencia == NULL){
@@ -549,7 +543,7 @@ void consultar_lista_venda_individual(Venda* inicioVenda, int opAcao){
     }
   }
 }
-Venda *RemoveDadoEspecificoVenda(int qtd, int sigla, float valor, Venda *ptr){
+void RemoveDadoEspecificoVenda(int qtd, int sigla, float valor, Venda *ptr){
 	Venda* busca;
 	Venda* anterior;
 	anterior = NULL;
@@ -568,20 +562,6 @@ Venda *RemoveDadoEspecificoVenda(int qtd, int sigla, float valor, Venda *ptr){
 		anterior = busca;
 		busca = busca->prox;
 	}
-  return NULL;
-}
-void arquivoVendas(){
-    Venda arquivo;   
-    FILE * file  = fopen("vendas.txt","r");
-
-    if(file == NULL){
-    	printf("Não foi possível abrir o arquivo.\n");
-    }else{
-        while (fscanf(file, "%d %d %f", &arquivo.sigla,&arquivo.qtd,&arquivo.valor) != EOF ){
-            inserir_ordenado_venda(&listaVenda,arquivo.qtd, arquivo.valor, arquivo.sigla);
-        }
-    }
-    fclose(file);
 }
 void consultar_lista_compra(Compra* inicioCompra){
 	Compra *referencia = inicioCompra;
@@ -632,7 +612,7 @@ void consultar_lista_individual(Compra* inicioCompra, int opAcao){
     }
   }
 }
-Compra *RemoveDadoEspecifico(int qtd, int sigla, float valor, Compra *ptr){
+void RemoveDadoEspecifico(int qtd, int sigla, float valor, Compra *ptr){
 	Compra* busca;
 	Compra* anterior;
 	anterior = NULL;
@@ -651,7 +631,6 @@ Compra *RemoveDadoEspecifico(int qtd, int sigla, float valor, Compra *ptr){
 		anterior = busca;
 		busca = busca->prox;
 	}
-  return NULL;
 }
 void arquivoCompras(){
     Compra arquivo;   
@@ -666,3 +645,17 @@ void arquivoCompras(){
     }
     fclose(file);
 }
+void arquivoVendas(){
+    Venda arquivo;   
+    FILE * file  = fopen("vendas.txt","r");
+
+    if(file == NULL){
+    	printf("Não foi possível abrir o arquivo.\n");
+    }else{
+        while (fscanf(file, "%d %d %f", &arquivo.sigla,&arquivo.qtd,&arquivo.valor) != EOF ){
+            inserir_ordenado_venda(&listaVenda,arquivo.qtd, arquivo.valor, arquivo.sigla);
+        }
+    }
+    fclose(file);
+}
+
